@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LoveKWalmartCode</string>
+    <string name="label_name">Name: %s</string>
+    <string name="label_region">Region: %s</string>
+    <string name="label_code">Code: %s</string>
+    <string name="label_capital">Capital: %s</string>
+    <string name="countries">Countries</string>
+</resources>

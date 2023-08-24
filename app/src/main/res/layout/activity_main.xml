@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/walmart_blue">
+
+    <!-- Display Title -->
+    <TextView
+        android:id="@+id/displayTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/countries"
+        android:textSize="24sp"
+        android:textColor="@color/walmart_blue"
+        android:gravity="center"
+        android:background="@color/walmart_yellow"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- RecyclerView for countries list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countriesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
