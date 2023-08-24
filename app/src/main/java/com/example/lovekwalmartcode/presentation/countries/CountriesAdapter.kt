@@ -8,32 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lovekwalmartcode.R
 import com.example.lovekwalmartcode.domain.model.CountryItem
 
-class CountriesAdapter(var countries: List<CountryItem>) : RecyclerView.Adapter<CountriesAdapter.CountryViewHolder>() {
+class CountriesAdapter(var countries: List<CountryItem>) :
+    RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.country_item, parent, false)
-        return CountryViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = countries.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val country = countries[position]
 
-    override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        holder.bind(countries[position])
+        // Bind data to the views
+        holder.nameAndRegionTextView.text = "${country.name}, ${country.region}"
+        holder.codeTextView.text = country.code
+        holder.capitalTextView.text = country.capital
     }
 
-    class CountryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
-        private val codeTextView: TextView = itemView.findViewById(R.id.codeTextView)
-        private val regionTextView: TextView = itemView.findViewById(R.id.regionTextView)
-        private val capitalTextView: TextView = itemView.findViewById(R.id.capitalTextView)
+    override fun getItemCount() = countries.size
 
-        fun bind(country: CountryItem) {
-            nameTextView.text = itemView.context.getString(R.string.label_name, country.name)
-            regionTextView.text = itemView.context.getString(R.string.label_region, country.region)
-            codeTextView.text = itemView.context.getString(R.string.label_code, country.code)
-            capitalTextView.text = itemView.context.getString(R.string.label_capital, country.capital)
-
-
-        }
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val nameAndRegionTextView: TextView = view.findViewById(R.id.nameAndRegionTextView)
+        val codeTextView: TextView = view.findViewById(R.id.codeTextView)
+        val capitalTextView: TextView = view.findViewById(R.id.capitalTextView)
     }
 }
