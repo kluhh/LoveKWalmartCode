@@ -1,8 +1,7 @@
 package com.example.lovekwalmartcode.presentation.countries
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lovekwalmartcode.R
 import com.example.lovekwalmartcode.dependency_injection.AppModule
 import com.example.lovekwalmartcode.domain.use_case.get_all_countries.GetAllCountriesUseCase
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: CountriesViewModel
@@ -33,9 +33,21 @@ class MainActivity : AppCompatActivity() {
         }).get(CountriesViewModel::class.java)
 
         // Observe data changes and update UI
-        viewModel.countries.observe(this, Observer { countries ->
+        viewModel.countries.observe(this) { countries ->
             countriesAdapter.countries = countries
             countriesAdapter.notifyDataSetChanged()
-        })
+        }
+
+
+        //be patient snack bar will show up if error occurs
+        viewModel.error.observe(this) { errorMessage ->
+            Snackbar.make(
+                findViewById(R.id.countriesRecyclerView),
+                errorMessage,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+
+
     }
 }
