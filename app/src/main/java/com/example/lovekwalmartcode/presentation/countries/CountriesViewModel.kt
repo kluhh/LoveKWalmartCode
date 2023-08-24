@@ -6,17 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lovekwalmartcode.domain.model.CountryItem
 import com.example.lovekwalmartcode.domain.use_case.get_all_countries.GetAllCountriesUseCase
+import com.example.lovekwalmartcode.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 class CountriesViewModel(private val getAllCountriesUseCase: GetAllCountriesUseCase) : ViewModel() {
 
-    private val _countries = MutableLiveData<List<CountryItem>>()
-    val countries: MutableLiveData<List<CountryItem>> get() = _countries
-
-    private val _error = MutableLiveData<String>()
-    val error: MutableLiveData<String> get() = _error
+    private val _countries = MutableLiveData<Resource<List<CountryItem>>>()
+    val countries: MutableLiveData<Resource<List<CountryItem>>> get() = _countries
 
 
     init {
@@ -24,17 +22,20 @@ class CountriesViewModel(private val getAllCountriesUseCase: GetAllCountriesUseC
     }
 
     private fun fetchCountries() {
+        _countries.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val countriesList = getAllCountriesUseCase()
-                _countries.postValue(countriesList)
+                _countries.postValue(Resource.Success(countriesList))
             } catch (exception: IOException) {
-                _error.postValue("Network error. Please check your connection.")
+                _countries.postValue(Resource.Error("Network error. Please check your connection."))
             } catch (exception: Exception) {
-                _error.postValue("An unexpected error occurred.")
-                // Log for debugging
+                // For other unknown errors
+                _countries.postValue(Resource.Error("Failed to fetch countries due to an unexpected error."))
                 Log.e("CountriesViewModel", exception.toString())
             }
         }
     }
+
+
 }

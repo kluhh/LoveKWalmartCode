@@ -2,6 +2,7 @@ package com.example.lovekwalmartcode.presentation.countries
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lovekwalmartcode.R
 import com.example.lovekwalmartcode.dependency_injection.AppModule
 import com.example.lovekwalmartcode.domain.use_case.get_all_countries.GetAllCountriesUseCase
+import com.example.lovekwalmartcode.utils.Resource
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -32,21 +34,21 @@ class MainActivity : AppCompatActivity() {
             }
         }).get(CountriesViewModel::class.java)
 
-        // Observe data changes and update UI
-        viewModel.countries.observe(this) { countries ->
-            countriesAdapter.countries = countries
-            countriesAdapter.notifyDataSetChanged()
-        }
+        viewModel.countries.observe(this, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    countriesAdapter.countries = resource.data ?: listOf()
+                    countriesAdapter.notifyDataSetChanged()
+                }
+                is Resource.Error -> {
+                    Snackbar.make(findViewById(R.id.countriesRecyclerView), resource.message ?: "An error occurred.", Snackbar.LENGTH_LONG).show()
+                }
+                is Resource.Loading -> {
+                }
+            }
+        })
 
 
-        //be patient snack bar will show up if error occurs
-        viewModel.error.observe(this) { errorMessage ->
-            Snackbar.make(
-                findViewById(R.id.countriesRecyclerView),
-                errorMessage,
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
 
 
     }
