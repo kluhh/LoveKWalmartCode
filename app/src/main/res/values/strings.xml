@@ -5,4 +5,8 @@
     <string name="label_code">Code: %s</string>
     <string name="label_capital">Capital: %s</string>
     <string name="countries">Countries</string>
+    <string name="country_name_region_format">%1$s, %2$s</string>
+    <string name="country_code_format">%s</string>
+    <string name="country_capital_format">%s</string>
+
 </resources>

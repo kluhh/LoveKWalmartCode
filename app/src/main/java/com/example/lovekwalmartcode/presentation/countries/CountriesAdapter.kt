@@ -19,10 +19,12 @@ class CountriesAdapter(var countries: List<CountryItem>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val country = countries[position]
 
-        // Bind data to the views
-        holder.nameAndRegionTextView.text = "${country.name}, ${country.region}"
-        holder.codeTextView.text = country.code
-        holder.capitalTextView.text = country.capital
+        holder.nameAndRegionTextView.text = holder.itemView.context.getString(
+            R.string.country_name_region_format, country.name, country.region)
+        holder.codeTextView.text = holder.itemView.context.getString(
+            R.string.country_code_format, country.code)
+        holder.capitalTextView.text = holder.itemView.context.getString(
+            R.string.country_capital_format, country.capital)
     }
 
     override fun getItemCount() = countries.size
